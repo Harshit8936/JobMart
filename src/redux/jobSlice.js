@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-//A "slice" is a collection of Redux reducer logic and actions for a single feature in your app, 
-//typically defined together in a single file.
+
 const jobSlice = createSlice({
     name:"job",
     initialState:{
