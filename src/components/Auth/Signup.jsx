@@ -12,7 +12,7 @@ import { setLoading } from '@/redux/authSlice'
 import { Loader2 } from 'lucide-react'
 
 export default function Signup() {
-    const [user,setUser] = useState({
+    const [input,setInput] = useState({
         fullname:"",
         phone:"",
         email:"",
@@ -20,12 +20,12 @@ export default function Signup() {
         role:"",
         profilePhoto:""
     })
-    const {loading} = useSelector(store=>store.auth)
+    const {loading,user} = useSelector(store=>store.auth)
     const handleOnchangeInput = (e)=>{
-        setUser({...user,[e.target.name]:e.target.value})
+        setInput({...input,[e.target.name]:e.target.value})
     }
     const changeFileHandler = (e)=>{
-        setUser({...user, profilePhoto:e.target.files?.[0]})
+        setInput({...input, profilePhoto:e.target.files?.[0]})
     }
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -33,13 +33,13 @@ export default function Signup() {
     const handleForm = async(e)=>{
         e.preventDefault();
         const formData = new FormData();
-        formData.append("fullname",user.fullname)
-        formData.append("email",user.email)
-        formData.append("phone",user.phone)
-        formData.append("password",user.password)
-        formData.append("role",user.role)
-        if(user.profilePhoto){
-            formData.append("profilePhoto",user.profilePhoto)
+        formData.append("fullname",input.fullname)
+        formData.append("email",input.email)
+        formData.append("phone",input.phone)
+        formData.append("password",input.password)
+        formData.append("role",input.role)
+        if(input.profilePhoto){
+            formData.append("profilePhoto",input.profilePhoto)
         }
         try {
             dispatch(setLoading(true));
@@ -49,7 +49,7 @@ export default function Signup() {
                 },
             })
             if(res.data.success){
-                setUser({fullname:"",phone:"", email:"", password:"", role:"", file:""});
+                setInput({fullname:"",phone:"", email:"", password:"", role:"", file:""});
                 toast.success(res.data.message ? res.data.message: "Register Success");
                 navigate("/login");
             }
@@ -71,28 +71,28 @@ export default function Signup() {
                 <h1 className='flex font-bold text-xl mb-5'>Sign Up</h1>
                 <div className='my-2'>
                     <Label className='flex my-2' htmlFor="fullname">Full Name</Label>
-                    <Input type="text" placeholder="Enter your full name" name="fullname" value={user.fullname} onChange={handleOnchangeInput} required/>
+                    <Input type="text" placeholder="Enter your full name" name="fullname" value={input.fullname} onChange={handleOnchangeInput} required/>
                 </div>
                 <div className='my-2'>
                     <Label className='flex my-2' htmlFor="email">Email</Label>
-                    <Input type="email" placeholder="Enter your Email" name="email" value={user.email} onChange={handleOnchangeInput} required/>
+                    <Input type="email" placeholder="Enter your Email" name="email" value={input.email} onChange={handleOnchangeInput} required/>
                 </div>
                 <div className='my-2'>
                     <Label className='flex my-2' htmlFor="phone">Phone number</Label>
-                    <Input type="number" placeholder="Enter your Phone Number" name="phone" value={user.phone} onChange={handleOnchangeInput} required/>
+                    <Input type="number" placeholder="Enter your Phone Number" name="phone" value={input.phone} onChange={handleOnchangeInput} required/>
                 </div>
                 <div className='my-2'>
                     <Label className='flex my-2' htmlFor="password">Password</Label>
-                    <Input type="password" placeholder="Enter your Password" name="password" value={user.password} onChange={handleOnchangeInput} required/>
+                    <Input type="password" placeholder="Enter your Password" name="password" value={input.password} onChange={handleOnchangeInput} required/>
                 </div>
                 <div className='flex items-center justify-between'>
                     <RadioGroup className="flex items-center gap-4 my-5">
                         <div className="flex items-center space-x-2">
-                            <Input type="radio" name="role" value="student" className="cursor-pointer" checked={user.role==='student'} onChange={handleOnchangeInput}/>
+                            <Input type="radio" name="role" value="student" className="cursor-pointer" checked={input.role==='student'} onChange={handleOnchangeInput}/>
                             <Label htmlFor="student">Student</Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                        <Input type="radio" name="role" value="recruiter" className="cursor-pointer" checked={user.role==='recruiter'} onChange={handleOnchangeInput}/>
+                        <Input type="radio" name="role" value="recruiter" className="cursor-pointer" checked={input.role==='recruiter'} onChange={handleOnchangeInput}/>
                         <Label htmlFor="recruiter">Recruiter</Label>
                         </div>
                     </RadioGroup>
